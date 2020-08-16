@@ -1,5 +1,3 @@
-// var UserIp = require('./user_ip');
-
 const ipList={}
 class UserIp {
     constructor(ip) {

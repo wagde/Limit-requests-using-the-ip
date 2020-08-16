@@ -1,35 +1,39 @@
-var express = require('express');
-var router = express.Router();
-var parkDb = require('../db/db');
+const express = require('express');
+const router = express.Router();
+const parkDb = require('../db/db');
+const { inputNotFound, carAddedSucc, carAddedFail, carDeletedSucc, carDeletedFail,carGetFail ,alreadyExist} = require('../res_massges/response_massages');
 
-console.log(process.env.PARKING_SIZE)
-
-router.post('/add_car', function(req, res, next) {
-let carNumber= req.body && req.body.car_number;
-if(carNumber){
-  res.send(parkDb.addCar(carNumber));
-}else{
-  res.send("please enter the car number");
-}});
-
-router.delete('/delete_car', function(req, res, next) {
-console.log(req.ip)
-if(req.body){
-
-
-  
-}
-  res.send('respond with a resource');
-
+router.post('/add_car', function (req, res) {
+  const carNumber = req.body && req.body.car_number;
+  if (carNumber!==undefined) {
+    const slotStatus = parkDb.addCar(carNumber);
+    res.send(slotStatus);
+  } else {
+    res.send(inputNotFound);
+  }
 });
 
 
-router.get('/get_car', function(req, res, next) {
-const ipAddress=req.connection.remoteAddress;
-console.log(req.connection)
 
-  res.send('respond with a resource');
+router.delete('/delete_car/:slot', function (req, res) {
+  const slot = req.params.slot;
+  if (typeof slot !== "undefined") {
+    res.send(parkDb.deleteCar(slot))
+  }
+  else {
+    res.status.send(inputNotFound);
+  }
 });
+
+
+router.get('/get_car', function (req, res) {
+  const { car_number, slot } = req.query;
+  if (car_number !== undefined || slot !== undefined) {
+    const parkSlotData=parkDb.getCar(car_number,Number(slot));
+    res.json(parkSlotData)
+  } else {
+    res.send(inputNotFound);
+  }});
 
 
 module.exports = router;
