@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const parkDb = require('../db/db');
+console.log(parkDb)
 const { inputNotFound, carAddedSucc, carAddedFail, carDeletedSucc, carDeletedFail,carGetFail ,alreadyExist} = require('../res_massges/response_massages');
 
 router.post('/add_car', function (req, res) {

@@ -44,4 +44,4 @@ class ParkingDb {
     }
 }
 
-module.exports = new ParkingDb(process.env.SIZE || 10);
+module.exports = new ParkingDb(process.env.PARKIN_SIZE || 10);
